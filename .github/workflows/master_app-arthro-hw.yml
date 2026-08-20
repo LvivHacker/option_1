@@ -24,20 +24,17 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
 
-      - name: Install .NET 4.5.1 Developer Pack
-        run: choco install netfx-4.5.1-devpack -y
-
       - name: Restore NuGet packages
-        run: nuget restore PartsUnlimited-aspnet45/PartsUnlimited.sln
+        run: nuget restore
 
       - name: Publish to folder
-        run: msbuild PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/PartsUnlimitedWebsite.csproj /nologo /verbosity:m /t:PipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="${{ github.workspace }}\published"      
-      
+        run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: ./published
+          path: '/published/**'
 
   deploy:
     runs-on: windows-latest
@@ -55,9 +52,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EACFB8E900884CF6986D5FB6A71F8D1A }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_14F20C6E48994DD182371AD318432889 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_06995E30354D4B75ACEB62F17FD27A2A }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6766A8091954489EBD42A0C1FB2F988B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9438E58553374194B032CC628EFA84E7 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_BC109D10C3744371BFCE530B76D2D13C }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
