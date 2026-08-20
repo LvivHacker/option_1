@@ -24,17 +24,14 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
 
+      - name: Install .NET 4.5.1 Developer Pack
+        run: choco install netfx-4.5.1-devpack -y
+
       - name: Restore NuGet packages
         run: nuget restore PartsUnlimited-aspnet45/PartsUnlimited.sln
 
       - name: Publish to folder
         run: msbuild PartsUnlimited-aspnet45/PartsUnlimited.sln /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build & Publish
-        run: dotnet publish -c Release -o ./published
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
