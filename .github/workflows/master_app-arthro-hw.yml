@@ -31,7 +31,7 @@ jobs:
         run: nuget restore PartsUnlimited-aspnet45/PartsUnlimited.sln
 
       - name: Publish to folder
-        run: msbuild PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/PartsUnlimitedWebsite.csproj /nologo /verbosity:m /t:PipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="D:\published\"
+        run: msbuild PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/PartsUnlimitedWebsite.csproj /nologo /verbosity:m /t:PipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="${{ github.workspace }}\published"      
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
